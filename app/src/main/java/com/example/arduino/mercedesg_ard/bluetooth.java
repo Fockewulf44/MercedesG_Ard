@@ -3,7 +3,10 @@ package com.example.arduino.mercedesg_ard;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -15,10 +18,15 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 
 public class bluetooth extends AppCompatActivity {
+
+    private ArrayAdapter<String> adapter;
+    private List<String> liste;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +63,26 @@ public class bluetooth extends AppCompatActivity {
 
                     mBluetoothAdapter.startDiscovery();
 
+                    BroadcastReceiver mReceiver = new BroadcastReceiver() {
+                        public void onReceive(Context context, Intent intent) {
+                            String action = intent.getAction();
+
+                            //Finding devices
+                            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                                // Get the BluetoothDevice object from the Intent
+                                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                                // Add the name and address to an array adapter to show in a ListView
+                                //mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+                            }
+                        }
+                    };
+
+                    IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+                    registerReceiver(mReceiver, filter);
+
                 } catch (Exception ex) {
 
                 }
-
             }
         });
 //        GET PAIRED DEVICES LIST
@@ -88,6 +112,25 @@ public class bluetooth extends AppCompatActivity {
                         arrayAdapter.add(device.getName() + "\n" + device.getAddress());
                     }
                 }
+            }
+        });
+
+
+        Button btnCreateList = (Button) findViewById(R.id.btLoadList);
+        btnCreateList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                String[] values = new String[]{"Android", "iPhone", "WindowsMobile",
+//                        "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
+//                        "Linux", "OS/2"};
+//
+//                liste = new ArrayList<>();
+//                Collections.addAll(liste, values);
+//
+
+                ListView lvBluetooth = (ListView) findViewById(R.id.lvBtList);
+
+                lvBluetooth.setAdapter(arrayAdapter);
             }
         });
 
