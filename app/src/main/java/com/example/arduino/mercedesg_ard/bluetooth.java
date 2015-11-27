@@ -115,7 +115,7 @@ public class bluetooth extends AppCompatActivity {
             }
         });
 
-
+        //Fill ListView via button
         Button btnCreateList = (Button) findViewById(R.id.btLoadList);
         btnCreateList.setOnClickListener(new View.OnClickListener() {
             @Override
