@@ -32,7 +32,7 @@ public class bluetooth extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth);
-        String[] strings = new String[]{"Android Introduction", "Android Setup/Installation", "Android Hello World", "Android Layouts/Viewgroups", "Android Activity & Lifecycle", "Intents in Android"};
+        String[] strings = new String[]{"Android Introduction", "Android Setup/Installation", "Android Hello World"};
         ArrayList<String> codeLearnChapters = new ArrayList<>(Arrays.asList(strings));
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, codeLearnChapters);
 
@@ -72,7 +72,7 @@ public class bluetooth extends AppCompatActivity {
                                 // Get the BluetoothDevice object from the Intent
                                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                                 // Add the name and address to an array adapter to show in a ListView
-                                //mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+                                arrayAdapter.add(device.getName() + "\n" + device.getAddress());
                             }
                         }
                     };
@@ -115,7 +115,6 @@ public class bluetooth extends AppCompatActivity {
             }
         });
 
-        //Test Home PC
         //Fill ListView via button
         Button btnCreateList = (Button) findViewById(R.id.btLoadList);
         btnCreateList.setOnClickListener(new View.OnClickListener() {
@@ -135,27 +134,22 @@ public class bluetooth extends AppCompatActivity {
             }
         });
 
-//        CONNECT TO PAIRED DEVICE
-//        Button buttonConnect = (Button) findViewById(R.id.btConnect);
-//        buttonConnect.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
+        Button btnAddItem = (Button) findViewById(R.id.btAddItem);
+        btnAddItem.setOnClickListener(new View.OnClickListener() {
+                                          @Override
+                                          public void onClick(View v) {
+                                            arrayAdapter.add("New Item");
+                                          }
+                                      }
+        );
+
+        //Connect from ListView
+//        ListView lvBltList= (ListView) findViewById(R.id.lvBtList);
+//        lvBltList.setOnClickListener(new View.OnClickListener()
+//        {
 //
-//                try {
-//                    BluetoothSocket tmp = null;
-//                    mmDevice = device;
-//
-//
-//                    // MY_UUID is the app's UUID string, also used by the server code
-//                    tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
-//
-//                    mmSocket = tmp;
-//
-//                } catch (Exception ex) {
-//                    Alerts.ShowAlerts(ex.toString(), v.getContext());
-//                }
-//            }
 //        });
+
 
 //      BACK Button
         Button button = (Button) findViewById(R.id.btBack);
