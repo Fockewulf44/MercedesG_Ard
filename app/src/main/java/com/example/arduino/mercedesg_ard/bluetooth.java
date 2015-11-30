@@ -12,9 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,6 +44,34 @@ public class bluetooth extends AppCompatActivity {
 
 //        final ListView codeLearnLessons = (ListView) findViewById(R.id.lvBluetooth);
 //        codeLearnLessons.setAdapter(arrayAdapter);
+
+        //Filling ListView by Paired Devices
+        ListView lvBluetooth = (ListView) findViewById(R.id.lvBtList);
+        lvBluetooth.setAdapter(arrayAdapter);
+
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (mBluetoothAdapter == null) {
+            Alerts.ShowAlerts("NoBluetooth!", getApplicationContext());
+        }
+
+        //enable Bluetooth
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, 1);
+        }
+
+        arrayAdapter.clear();
+//                 If there are paired devices
+        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+
+        if (pairedDevices.size() > 0) {
+            // Loop through paired devices
+            for (BluetoothDevice device : pairedDevices) {
+                // Add the name and address to an array adapter to show in a ListView
+                arrayAdapter.add(device.getName() + "\n" + device.getAddress());
+            }
+        }
+
 
 //      SEARCH
         Button btnSearch = (Button) findViewById(R.id.btSearch);
@@ -138,17 +168,23 @@ public class bluetooth extends AppCompatActivity {
         btnAddItem.setOnClickListener(new View.OnClickListener() {
                                           @Override
                                           public void onClick(View v) {
-                                            arrayAdapter.add("New Item");
+                                              arrayAdapter.add("New Item");
                                           }
                                       }
         );
 
         //Connect from ListView
-//        ListView lvBltList= (ListView) findViewById(R.id.lvBtList);
-//        lvBltList.setOnClickListener(new View.OnClickListener()
-//        {
-//
-//        });
+        final ListView lvBltList = (ListView) findViewById(R.id.lvBtList);
+        lvBltList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+
+                Object o = lvBltList.getItemAtPosition(position);
+//                Alerts.ShowAlerts(o.toString(),arg1.getContext());
+
+            }
+
+        });
 
 
 //      BACK Button
