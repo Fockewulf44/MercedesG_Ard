@@ -51,7 +51,8 @@ public class bluetooth extends AppCompatActivity {
 
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
-            Alerts.ShowAlerts("NoBluetooth!", getApplicationContext());
+            //Alerts.ShowAlerts("NoBluetooth!", getApplicationContext());
+            finish();
         }
 
         //enable Bluetooth
@@ -59,6 +60,7 @@ public class bluetooth extends AppCompatActivity {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, 1);
         }
+
 
         arrayAdapter.clear();
 //                 If there are paired devices
@@ -183,7 +185,6 @@ public class bluetooth extends AppCompatActivity {
 //                Alerts.ShowAlerts(o.toString(),arg1.getContext());
 
             }
-
         });
 
 
@@ -197,6 +198,13 @@ public class bluetooth extends AppCompatActivity {
         });
     }
 
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
