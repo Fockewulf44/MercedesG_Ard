@@ -180,10 +180,18 @@ public class bluetooth extends AppCompatActivity {
         lvBltList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-
-                Object o = lvBltList.getItemAtPosition(position);
+                try {
+                    Object o = lvBltList.getItemAtPosition(position);
 //                Alerts.ShowAlerts(o.toString(),arg1.getContext());
-
+                    String[] Splitted = o.toString().split("\n", 2);
+                    //BltConnectTHRD inst= new BltConnectTHRD()
+                    BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+//                Splitted[1]
+                }
+                catch (Exception ex)
+                {
+                    Alerts.ShowAlerts(ex.getMessage(),arg1.getContext());
+                }
             }
         });
 
