@@ -30,6 +30,8 @@ public class bluetooth extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     private List<String> liste;
 
+    BluetoothAdapter mBluetoothAdapter = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +44,8 @@ public class bluetooth extends AppCompatActivity {
         final BluetoothDevice mmDevice;
 
 
+
+
 //        final ListView codeLearnLessons = (ListView) findViewById(R.id.lvBluetooth);
 //        codeLearnLessons.setAdapter(arrayAdapter);
 
@@ -49,7 +53,7 @@ public class bluetooth extends AppCompatActivity {
         ListView lvBluetooth = (ListView) findViewById(R.id.lvBtList);
         lvBluetooth.setAdapter(arrayAdapter);
 
-        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
             //Alerts.ShowAlerts("NoBluetooth!", getApplicationContext());
             finish();
@@ -81,7 +85,7 @@ public class bluetooth extends AppCompatActivity {
             public void onClick(View v) {
                 //Alerts.ShowAlerts("Hi There!!", v.getContext());
                 try {
-                    BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                    mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
                     if (mBluetoothAdapter == null) {
                         Alerts.ShowAlerts("NoBluetooth!", v.getContext());
                     }
@@ -114,9 +118,26 @@ public class bluetooth extends AppCompatActivity {
 
                 } catch (Exception ex) {
 
+                } finally {
+
                 }
             }
         });
+
+
+        //Stop
+        Button btnStopDisc = (Button) findViewById(R.id.btStopDisc);
+        btnStopDisc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mBluetoothAdapter != null) {
+                    mBluetoothAdapter.cancelDiscovery();
+                }
+            }
+        });
+
+
+
 //        GET PAIRED DEVICES LIST
         Button btnPaired = (Button) findViewById(R.id.btPaired);
         btnPaired.setOnClickListener(new View.OnClickListener() {
@@ -148,7 +169,7 @@ public class bluetooth extends AppCompatActivity {
         });
 
         //Fill ListView via button
-        Button btnCreateList = (Button) findViewById(R.id.btLoadList);
+        Button btnCreateList = (Button) findViewById(R.id.btStopDisc);
         btnCreateList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,12 +206,11 @@ public class bluetooth extends AppCompatActivity {
 //                Alerts.ShowAlerts(o.toString(),arg1.getContext());
                     String[] Splitted = o.toString().split("\n", 2);
                     //BltConnectTHRD inst= new BltConnectTHRD()
+                    Alerts.ShowAlerts(Splitted[1],arg1.getContext());
                     BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 //                Splitted[1]
-                }
-                catch (Exception ex)
-                {
-                    Alerts.ShowAlerts(ex.getMessage(),arg1.getContext());
+                } catch (Exception ex) {
+                    Alerts.ShowAlerts(ex.getMessage(), arg1.getContext());
                 }
             }
         });
@@ -208,8 +228,7 @@ public class bluetooth extends AppCompatActivity {
 
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
 
     }
